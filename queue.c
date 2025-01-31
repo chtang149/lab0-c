@@ -25,9 +25,9 @@ struct list_head *q_new()
 /* Free all storage used by queue */
 void q_free(struct list_head *head)
 {
-    element_t *entry, *safe;
     if (!head)
         return;
+    element_t *entry, *safe;
     list_for_each_entry_safe (entry, safe, head, list)
         q_release_element(entry);
     free(head);
@@ -63,11 +63,13 @@ bool q_insert_tail(struct list_head *head, char *s)
     if (!node) {
         return false;
     }
-    node->value = strdup(s);
+    int len = strlen(s) + 1;
+    node->value = malloc(sizeof(char) * len);
     if (!node->value) {
         free(node); /*!!!!REMEMBER TO FREE "node"*/
         return false;
     }
+    strncpy(node->value, s, len);
     list_add_tail(&node->list, head);
     return true;
     // return true;
@@ -81,7 +83,9 @@ element_t *q_remove_head(struct list_head *head, char *sp, size_t bufsize)
     }
     element_t *fentry = list_first_entry(head, element_t, list);
     if (sp) {
-        snprintf(sp, bufsize, "%s", fentry->value);
+        // snprintf(sp, bufsize, "%s", fentry->value);
+        strncpy(fentry->value, sp, bufsize - 1);
+        sp[bufsize - 1] = '\0';
     }
 
     // memcpy(sp, fentry->value, bufsize);
