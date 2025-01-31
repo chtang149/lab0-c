@@ -84,7 +84,7 @@ element_t *q_remove_head(struct list_head *head, char *sp, size_t bufsize)
     element_t *fentry = list_first_entry(head, element_t, list);
     if (sp) {
         // snprintf(sp, bufsize, "%s", fentry->value);
-        strncpy(fentry->value, sp, bufsize - 1);
+        strncpy(fentry->value, sp, bufsize);
         sp[bufsize - 1] = '\0';
     }
 
