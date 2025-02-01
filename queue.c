@@ -33,21 +33,44 @@ void q_free(struct list_head *head)
     free(head);
 }
 
+static inline element_t *q_new_elem(char *s)
+{
+    element_t *elem = malloc(sizeof(element_t));
+    if (!elem)
+        return NULL;
+
+    char *tmp = strdup(s);
+    if (!tmp) {
+        free(elem);
+        return NULL;
+    }
+
+    elem->value = tmp;
+    return elem;
+}
+
 /* Insert an element at head of queue */
 bool q_insert_head(struct list_head *head, char *s)
 {
     if (!head || !s) {
         return false;
     }
-    element_t *node = malloc(sizeof(element_t));
+    element_t *node = q_new_elem(s);
     if (!node) {
         return false;
     }
-    node->value = strdup(s);
-    if (!node->value) {
-        free(node);
-        return false;
-    }
+    // element_t *node = malloc(sizeof(element_t));
+    // if (!node) {
+    //     return false;
+    // }
+    // int len = strlen(s) + 1;
+    // node->value = malloc(sizeof(char) * len);
+    // if (!node->value) {
+    //     free(node); /*!!!!REMEMBER TO FREE "node"*/
+    //     return false;
+    // }
+    // strncpy(node->value, s, len);
+
     list_add(&node->list, head);
     return true;
     // return true;
@@ -59,17 +82,21 @@ bool q_insert_tail(struct list_head *head, char *s)
     if (!head || !s) {
         return false;
     }
-    element_t *node = malloc(sizeof(element_t));
+    element_t *node = q_new_elem(s);
     if (!node) {
         return false;
     }
-    int len = strlen(s) + 1;
-    node->value = malloc(sizeof(char) * len);
-    if (!node->value) {
-        free(node); /*!!!!REMEMBER TO FREE "node"*/
-        return false;
-    }
-    strncpy(node->value, s, len);
+    // element_t *node = malloc(sizeof(element_t));
+    // if (!node) {
+    //     return false;
+    // }
+    // int len = strlen(s) + 1;
+    // node->value = malloc(sizeof(char) * len);
+    // if (!node->value) {
+    //     free(node); /*!!!!REMEMBER TO FREE "node"*/
+    //     return false;
+    // }
+    // strncpy(node->value, s, len);
     list_add_tail(&node->list, head);
     return true;
     // return true;
