@@ -11,6 +11,22 @@
 //  cppcheck-suppress nullPointer
  */
 
+static inline element_t *q_new_elem(char *s)
+{
+    element_t *elem = malloc(sizeof(element_t));
+    if (!elem)
+        return NULL;
+
+    char *tmp = strdup(s);
+    if (!tmp) {
+        free(elem);
+        return NULL;
+    }
+
+    elem->value = tmp;
+    return elem;
+}
+
 /* Create an empty queue */
 struct list_head *q_new()
 {
@@ -28,26 +44,12 @@ void q_free(struct list_head *head)
 {
     if (!head)
         return;
-    // element_t *entry, *safe;
-    // list_for_each_entry_safe (entry, safe, head, list)
-    //     q_release_element(entry);
-    free(head);
-}
+    element_t *entry = NULL, *saf = NULL;
 
-static inline element_t *q_new_elem(char *s)
-{
-    element_t *elem = malloc(sizeof(element_t));
-    if (!elem)
-        return NULL;
-
-    char *tmp = strdup(s);
-    if (!tmp) {
-        free(elem);
-        return NULL;
+    list_for_each_entry_safe (entry, saf, head, list) {
+        q_release_element(entry);
     }
-
-    elem->value = tmp;
-    return elem;
+    free(head);
 }
 
 /* Insert an element at head of queue */
