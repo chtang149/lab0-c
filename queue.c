@@ -24,7 +24,7 @@ struct list_head *q_new()
 /* Free all storage used by queue */
 void q_free(struct list_head *head)
 {
-    element_t *entry, *safe;
+    element_t *entry = NULL, *safe = NULL;
     if (!head)
         return;
     list_for_each_entry_safe (entry, safe, head, list)
