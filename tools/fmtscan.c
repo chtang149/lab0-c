@@ -716,7 +716,7 @@ static get_char_t parse_number(parser_t *restrict p,
             /* Check for hexadecimal notation */
             get_char_t nextch2 = get_char(p);
 
-            if (LIKELY(nextch2 != PARSER_EOF)) {
+            if (UNLIKELY(nextch2 == PARSER_EOF)) {
                 /* If not EOF, revert state and finish token */
                 unget_char(p);
                 unget_char(p);

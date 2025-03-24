@@ -28,7 +28,7 @@ void q_free(struct list_head *head)
     if (!head)
         return;
     element_t *entry = NULL, *safe = NULL;
-    list_for_each_entry_safe (entry, safe, head, list)
+    list_for_each_entry_safe(entry, safe, head, list)
         q_release_element(entry);
     free(head);
 }
@@ -141,7 +141,7 @@ int q_size(struct list_head *head)
     int len = 0;
     struct list_head *li;
 
-    list_for_each (li, head)
+    list_for_each(li, head)
         len++;
     return len;
 }
@@ -150,6 +150,25 @@ int q_size(struct list_head *head)
 bool q_delete_mid(struct list_head *head)
 {
     // https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/
+    // ListNode* deleteMiddle(ListNode* head) {
+    // if (!head || list_is_singular(head)) {
+    //     return false;
+    // }
+    // struct list_head *current = NULL;
+    // int length = 0;
+    // list_for_each(current, head) {
+    //     length++;
+    // }
+    // current = current->next;
+    // for (int i = 0; i <= (length / 2) - 1; i++) {
+    //     current = current->next;
+    // }
+    // // current = current -> next;
+    // list_del(current);
+    // element_t *node = list_entry(current, element_t, list);
+    // q_release_element(node);
+    // free(current);
+    // return head;
     return true;
 }
 
