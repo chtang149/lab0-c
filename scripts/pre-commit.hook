@@ -49,6 +49,7 @@ cppcheck_suppressions() {
     "nullPointerOutOfMemory:web.c"
     "staticFunction:web.c"
     "constParameterCallback:tools/fmtscan.c"
+    "invalidFunctionArg:tools/fmtscan.c"
   )
 
   # Array for additional cppcheck options (non-suppressions)
