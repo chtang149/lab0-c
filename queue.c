@@ -150,25 +150,22 @@ int q_size(struct list_head *head)
 bool q_delete_mid(struct list_head *head)
 {
     // https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/
-    // ListNode* deleteMiddle(ListNode* head) {
-    // if (!head || list_is_singular(head)) {
-    //     return false;
-    // }
-    // struct list_head *current = NULL;
-    // int length = 0;
-    // list_for_each(current, head) {
-    //     length++;
-    // }
-    // current = current->next;
-    // for (int i = 0; i <= (length / 2) - 1; i++) {
-    //     current = current->next;
-    // }
-    // // current = current -> next;
-    // list_del(current);
-    // element_t *node = list_entry(current, element_t, list);
-    // q_release_element(node);
-    // free(current);
-    // return head;
+    if (!head || list_is_singular(head)) {
+        return false;
+    }
+    struct list_head *current = NULL;
+    int length = 0;
+    list_for_each(current, head) {
+        length++;
+    }
+    current = current->next;
+    for (int i = 0; i <= (length / 2) - 1; i++) {
+        current = current->next;
+    }
+    list_del(current);
+    element_t *node = list_entry(current, element_t, list);
+    q_release_element(node);
+
     return true;
 }
 
@@ -183,6 +180,26 @@ bool q_delete_dup(struct list_head *head)
 void q_swap(struct list_head *head)
 {
     // https://leetcode.com/problems/swap-nodes-in-pairs/
+    if (!head || list_is_singular(head)) {
+        return;
+    }
+    struct list_head *current = head;
+    struct list_head *tmp = NULL, *tmp2 = NULL;
+    while (current->next != head && current->next->next != head) {
+        tmp = current->next;
+        tmp2 = current->next->next;
+
+        tmp->next = tmp2->next;
+        tmp->prev = tmp2;
+        tmp2->next = tmp;
+        tmp2->prev = current;
+        current->next = tmp2;
+
+        current = tmp;
+    }
+    if (current->next == head && current != head->prev) {
+        head->prev = current;
+    }
 }
 
 /* Reverse elements in queue */
@@ -203,6 +220,38 @@ void q_reverse(struct list_head *head)
 void q_reverseK(struct list_head *head, int k)
 {
     // https://leetcode.com/problems/reverse-nodes-in-k-group/
+    if (!head || list_is_singular(head) || k == 1) {
+        return;
+    }
+    struct list_head *current = head->next, *previous = head, *temp,
+                     *last = head;
+    int length = q_size(head);
+    for (int i = 0; i < (length / k); i++) {
+        if (previous != head) {
+            while (previous->next != head) {
+                previous = previous->next;
+            }
+            last = previous;
+            previous = head;
+        }
+        for (int j = 0; j < k; j++) {
+            temp = current->next;
+            current->next = previous;
+            previous = current;
+            current->prev = temp;
+            current = temp;
+        }
+        last->next = previous;
+        previous->prev = last;
+    }
+    if (previous) {
+        while (previous->next != head) {
+            previous = previous->next;
+        }
+        previous->next = current;
+        current->prev = previous;
+    }
+
 }
 
 /* Sort elements of queue in ascending/descending order */
